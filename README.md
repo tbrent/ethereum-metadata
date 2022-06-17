@@ -1,6 +1,6 @@
 # Metadata Receiver
 
-This project describes a very simple smart contract for emitting arbitrary bytes. The idea is to use this smart contract as the recipient of a second tx that is batched together with an ERC20 transfer using Gnosis Safe transaction builder, as an easy hack for attachinig metadata to an ERC20 transfer.
+This project describes a very simple smart contract for emitting arbitrary bytes. The idea is to use this smart contract as the recipient of a second tx that is batched together with an ERC20 transfer using Gnosis Safe transaction builder, as an easy hack for attaching metadata to an ERC20 transfer.
 
 ## Deployments
 
