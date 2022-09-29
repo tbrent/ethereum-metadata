@@ -3,32 +3,67 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-import { ethers } from "hardhat";
+import hre, { ethers } from "hardhat";
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+  const ERC20UpgradeableFactory = await ethers.getContractFactory(
+    "MintableERC20Upgradeable"
+  );
+  const erc20 = await (await ERC20UpgradeableFactory.deploy()).deployed();
 
-  // We get the contract to deploy
-  // const Greeter = await ethers.getContractFactory("Greeter");
-  // const greeter = await Greeter.deploy("Hello, Hardhat!");
+  console.log(
+    "deployed ERC20 implementation (probably don't need this): ",
+    erc20.address
+  );
 
-  // await greeter.deployed();
+  console.log("sleeping 1m");
+  await new Promise((r) => setTimeout(r, 60000)); // sleep 1m
 
-  // console.log("Greeter deployed to:", greeter.address);
+  // Verify ERC20
+
+  await hre.run("verify:verify", {
+    address: erc20.address,
+    constructorArguments: [],
+    contract: "contracts/MintableERC20Upgradeable.sol:MintableERC20Upgradeable",
+    libraries: [],
+  });
+
+  const ProxyFactory = await ethers.getContractFactory("ERC1967Proxy");
+  const proxy = await (
+    await ProxyFactory.deploy(erc20.address, "0x")
+  ).deployed();
+
+  console.log("deployed proxied token to: ", proxy.address);
+
+  console.log("sleeping 1m");
+  await new Promise((r) => setTimeout(r, 60000)); // sleep 1m
+
+  // Verify
+
+  await hre.run("verify:verify", {
+    address: proxy.address,
+    constructorArguments: [erc20.address, "0x"],
+    contract:
+      "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:ERC1967UpgradeUpgradeable",
+    libraries: [],
+  });
 
   // ===============
 
   const Receiver = await ethers.getContractFactory("MetadataReceiver");
-  const receiver = await Receiver.deploy();
+  const receiver = await (await Receiver.deploy()).deployed();
 
-  await receiver.deployed();
+  console.log("MetadataReceiver deployed to:", receiver.address);
 
-  console.log("Receiver deployed to:", receiver.address);
+  console.log("sleeping 1m");
+  await new Promise((r) => setTimeout(r, 60000)); // sleep 1m
+
+  await hre.run("verify:verify", {
+    address: receiver.address,
+    constructorArguments: [],
+    contract: "contracts/Metadata.sol:MetadataReceiver",
+    libraries: [],
+  });
 }
 
 // We recommend this pattern to be able to use async/await everywhere
