@@ -21,12 +21,12 @@ async function main() {
 
   // Verify ERC20
 
-  await hre.run("verify:verify", {
-    address: erc20.address,
-    constructorArguments: [],
-    contract: "contracts/MintableERC20Upgradeable.sol:MintableERC20Upgradeable",
-    libraries: [],
-  });
+  // await hre.run("verify:verify", {
+  //   address: erc20.address,
+  //   constructorArguments: [],
+  //   contract: "contracts/MintableERC20Upgradeable.sol:MintableERC20Upgradeable",
+  //   libraries: [],
+  // });
 
   const ProxyFactory = await ethers.getContractFactory("ERC1967Proxy");
   const proxy = await (
@@ -40,13 +40,12 @@ async function main() {
 
   // Verify
 
-  await hre.run("verify:verify", {
-    address: proxy.address,
-    constructorArguments: [erc20.address, "0x"],
-    contract:
-      "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:ERC1967UpgradeUpgradeable",
-    libraries: [],
-  });
+  // await hre.run("verify:verify", {
+  //   address: proxy.address,
+  //   constructorArguments: [erc20.address, "0x"],
+  //   contract: "contracts/ERC1967Proxy.sol:ERC1967Proxy",
+  //   libraries: [],
+  // });
 
   // ===============
 
@@ -56,15 +55,15 @@ async function main() {
   console.log("MetadataReceiver deployed to:", receiver.address);
 
   console.log("sleeping 1m");
-  await new Promise((r) => setTimeout(r, 60000)); // sleep 1m
+  // await new Promise((r) => setTimeout(r, 60000)); // sleep 1m
 
-  await hre.run("verify:verify", {
-    address: receiver.address,
-    constructorArguments: [],
-    contract: "contracts/Metadata.sol:MetadataReceiver",
-    libraries: [],
-  });
-}
+//   await hre.run("verify:verify", {
+//     address: receiver.address,
+//     constructorArguments: [],
+//     contract: "contracts/Metadata.sol:MetadataReceiver",
+//     libraries: [],
+//   });
+// }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
