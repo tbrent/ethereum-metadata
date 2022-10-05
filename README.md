@@ -53,3 +53,7 @@ ERC20 implementation: https://goerli.etherscan.io/address/0xF1Ae5606beb467DC2023
 Proxy: https://goerli.etherscan.io/address/0xeC76FbFD75481839e456C4cb2cd23cda813f19B1
 
 Metadata Receiver: https://goerli.etherscan.io/address/0x89d2c2C7853AD6015d50f39A615196e17f13Cf59
+
+### Mainnet
+
+Metadata Receiver: https://etherscan.io/address/0x76BD419fBa96583d968b422D4f3CB2A70bf4CF40
